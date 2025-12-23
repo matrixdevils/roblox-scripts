@@ -1,9 +1,41 @@
 -- Wall Clip Script مع زر على الشاشة
--- ضع هذا في StarterGui كـ LocalScript
+-- يشتغل على أي Executor (داخلي أو خارجي)
+-- متوافق مع: Synapse, Krnl, Fluxus, Script-Ware, Delta, وكل الـ executors
 
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
+
+-- دالة إظهار رسالة
+local function showNotification(message, duration)
+    local notif = Instance.new("ScreenGui")
+    notif.Name = "Notification"
+    notif.ResetOnSpawn = false
+    notif.Parent = playerGui
+    
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 300, 0, 60)
+    frame.Position = UDim2.new(0.5, -150, 0.1, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+    frame.BorderSizePixel = 0
+    frame.Parent = notif
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = frame
+    
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.Text = message
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextSize = 18
+    label.Font = Enum.Font.GothamBold
+    label.Parent = frame
+    
+    task.wait(duration or 3)
+    notif:Destroy()
+end
 
 -- إعدادات
 local TELEPORT_DISTANCE = 3
@@ -60,4 +92,6 @@ button.MouseButton1Click:Connect(teleportForward)
 -- دعم اللمس للموبايل
 button.TouchTap:Connect(teleportForward)
 
+-- إظهار رسالة التحميل
+showNotification("✅ Wall Clip تم التحميل بنجاح!", 4)
 print("✅ Wall Clip GUI محمّل - اضغط الزر للتحرك!")

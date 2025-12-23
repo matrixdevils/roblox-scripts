@@ -1,86 +1,65 @@
--- Wall Clip Script - نسخة بسيطة ومضمونة
--- ✅ يشتغل على أضعف Executor
+-- WALL CLIP - أبسط نسخة ممكنة
+-- Copy و Execute
 
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
+wait(0.5) -- انتظار للتأكد
 
--- حذف أي GUI قديم
-for _, gui in pairs(player.PlayerGui:GetChildren()) do
-    if gui.Name == "WallClipGUI" then
-        gui:Destroy()
-    end
-end
+local player = game.Players.LocalPlayer
 
-wait(0.2)
-
--- إنشاء الـ GUI
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "WallClipGUI"
-ScreenGui.ResetOnSpawn = false
-
--- رسالة التحميل
-local Notification = Instance.new("TextLabel")
-Notification.Size = UDim2.new(0, 300, 0, 60)
-Notification.Position = UDim2.new(0.5, -150, 0.1, 0)
-Notification.BackgroundColor3 = Color3.new(0, 1, 0)
-Notification.BorderSizePixel = 0
-Notification.Text = "✅ Wall Clip تم التحميل!"
-Notification.TextColor3 = Color3.new(1, 1, 1)
-Notification.TextSize = 20
-Notification.Font = Enum.Font.SourceSansBold
-Notification.Parent = ScreenGui
-
--- إخفاء الرسالة
-spawn(function()
-    wait(3)
-    Notification:Destroy()
+-- حذف GUI قديم
+pcall(function()
+    player.PlayerGui.WallClipGUI:Destroy()
 end)
 
--- زر التحكم
-local Button = Instance.new("TextButton")
-Button.Size = UDim2.new(0, 150, 0, 60)
-Button.Position = UDim2.new(0.5, -75, 0.85, 0)
-Button.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
-Button.BorderSizePixel = 3
-Button.BorderColor3 = Color3.new(0, 1, 0.4)
-Button.Text = "⚡ تخطي\n(3 studs)"
-Button.TextColor3 = Color3.new(1, 1, 1)
-Button.TextSize = 18
-Button.Font = Enum.Font.SourceSansBold
-Button.Parent = ScreenGui
+wait(0.3)
 
--- دالة التليبورت
-local function Teleport()
-    local Char = player.Character
-    if Char then
-        local HRP = Char:FindFirstChild("HumanoidRootPart")
-        if HRP then
-            local LookVector = HRP.CFrame.LookVector
-            HRP.CFrame = HRP.CFrame + (LookVector * 3)
-            
-            -- تأثير بصري
-            Button.BackgroundColor3 = Color3.new(0, 1, 0)
-            wait(0.1)
-            Button.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
-        end
+-- GUI جديد
+local gui = Instance.new("ScreenGui")
+gui.Name = "WallClipGUI"
+gui.Parent = player.PlayerGui
+
+-- رسالة
+local msg = Instance.new("TextLabel")
+msg.Size = UDim2.new(0, 250, 0, 50)
+msg.Position = UDim2.new(0.5, -125, 0.1, 0)
+msg.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+msg.Text = "✅ LOADED!"
+msg.TextSize = 24
+msg.TextColor3 = Color3.fromRGB(255, 255, 255)
+msg.Font = Enum.Font.SourceSansBold
+msg.Parent = gui
+
+task.wait(2)
+msg:Destroy()
+
+-- الزر
+local btn = Instance.new("TextButton")
+btn.Size = UDim2.new(0, 120, 0, 50)
+btn.Position = UDim2.new(0.5, -60, 0.9, -25)
+btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+btn.Text = "CLIP"
+btn.TextSize = 20
+btn.TextColor3 = Color3.fromRGB(0, 255, 0)
+btn.Font = Enum.Font.SourceSansBold
+btn.BorderSizePixel = 2
+btn.BorderColor3 = Color3.fromRGB(0, 255, 0)
+btn.Parent = gui
+
+-- Function
+btn.MouseButton1Click:Connect(function()
+    local c = player.Character
+    if c and c:FindFirstChild("HumanoidRootPart") then
+        local hrp = c.HumanoidRootPart
+        hrp.CFrame = hrp.CFrame + hrp.CFrame.LookVector * 3
+        btn.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        wait(0.1)
+        btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     end
-end
+end)
 
--- ربط الزر
-Button.MouseButton1Click:Connect(Teleport)
+print("=== WALL CLIP READY ===")
+print("Button at bottom of screen")
+print("=======================")
 
--- وضع الـ GUI
-ScreenGui.Parent = player.PlayerGui
-
-print("✅ Wall Clip Loaded!")
-print("⚡ Button Location: Bottom Center")
-
--- تأثير دخول
-Button.Position = UDim2.new(0.5, -75, 1.2, 0)
-Button:TweenPosition(
-    UDim2.new(0.5, -75, 0.85, 0),
-    "Out",
-    "Bounce",
-    0.8,
-    true
-)
+-- Animation
+btn.Position = UDim2.new(0.5, -60, 1.5, 0)
+btn:TweenPosition(UDim2.new(0.5, -60, 0.9, -25), "Out", "Bounce", 0.7)
